@@ -1,7 +1,7 @@
 import Auth from "../models/authModel.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-// build rate-limiter while learning from chatgpt....
+
 export async function signup(req, res) {
     let { username, password } = req.body
     let checkSpc = /[@#$%&*^]/;

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaDownload } from "react-icons/fa6";
 
 
-export default function ImageContainer({ limitImg, showImg, setRenderImages, setShowImg, setShowFloat, setLimitImg }) {
+export default function ImageContainer({ limitImg, showImg, setRenderImages, setShowImg, setShowFloat, setLimitImg,setShowAlert,setAlertText }) {
 
     let { updateImg, deleteImg } = useStore();
     let [showUpdateInput, setShowUpdateInput] = useState({})
@@ -36,7 +36,8 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
         updateImg(trimSource, inputText)
             .then(res => {
                 if (res.data.text) {
-                    console.log(res)
+                    setShowAlert(true)
+                    setAlertText('there migght be a prompt error from your side')
                     setShowUDemo(false)
                 } else {
                     setTimeout(() => {
@@ -109,7 +110,8 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
                                     if (!checkSpaces && inputText.length != 0) {
                                         confirmUpd(source)
                                     } else {
-                                        console.log('just spaces or no text')
+                                        setShowAlert(true)
+                                        setAlertText('There is no text or just spaces inside input')
                                     }
                                 }}>Confrim</button>
                             <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg"

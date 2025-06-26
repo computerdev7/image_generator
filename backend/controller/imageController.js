@@ -6,7 +6,6 @@ import path from "path";
 const ai = new GoogleGenAI({ apiKey: "AIzaSyB2aSTV-lFPdnZ2L7jSP3Jj-90iCkRn9_k" });
 
 let __dirname = path.resolve()
-console.log(__dirname)
 
 export async function downloadImg(req,res) {
     let img = req.params.img

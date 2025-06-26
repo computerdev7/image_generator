@@ -1,7 +1,23 @@
 import {create} from "zustand"
 import api from "./axios.jsx"
 
-let useStore = create((set)=> ({
+let useStore = create((set,get)=> ({
+    showAlertS : {lert : false,text : ''},
+    setShowAlertT : ()=> {
+        set((state)=> ({
+            showAlertS : {...state.showAlertS,lert : true}
+        }))
+    },
+    setShowAlertF : ()=> {
+        set((state)=> ({
+            showAlertS : {...state.showAlertS,lert : false}
+        }))
+    },
+    setAlertText : (text)=> {
+        set((state)=> ({
+            showAlertS : {...state.showAlertS,text : text}
+        }))
+    },
     login : async(userName,passWord)=> {
         try{
             let data = await api.post('/auth/login',{
@@ -10,6 +26,10 @@ let useStore = create((set)=> ({
             })
             return data
         }catch(err){
+            let setShowAlertT = get().setShowAlertT
+            let setAlertText = get().setAlertText
+            setShowAlertT();
+            setAlertText('error in the login')
             console.log(err)
         }
     },
@@ -21,6 +41,10 @@ let useStore = create((set)=> ({
             })
             return data
         }catch(err){
+            let setShowAlertT = get().setShowAlertT
+            let setAlertText = get().setAlertText
+            setShowAlertT();
+            setAlertText('error in the signup')
             console.log(err)
         }
     },
@@ -34,6 +58,10 @@ let useStore = create((set)=> ({
                 return data.data.message
             }
         }catch(err){
+            let setShowAlertT = get().setShowAlertT
+            let setAlertText = get().setAlertText
+            setShowAlertT();
+            setAlertText('error in getting image')
             console.log(err)
         }
     },
@@ -43,6 +71,10 @@ let useStore = create((set)=> ({
             let data = await api.get(`/image/getallimage/${limit}`)
             return data
         }catch(err){
+            let setShowAlertT = get().setShowAlertT
+            let setAlertText = get().setAlertText
+            setShowAlertT();
+            setAlertText('error in getting all the image')
             console.log(err)
         }
     },
@@ -54,19 +86,25 @@ let useStore = create((set)=> ({
             })
             return data
         }catch(err){
+            let setShowAlertT = get().setShowAlertT
+            let setAlertText = get().setAlertText
+            setShowAlertT();
+            setAlertText('error in updating image')
             console.log(err)
         }
     },
     deleteImg : async(img,limit) => {
-
         try{
             let data = await api.delete(`/image/delete?img=${img}&limit=${limit}`)
             return data
         }catch(err){
+            let setShowAlertT = get().setShowAlertT
+            let setAlertText = get().setAlertText
+            setShowAlertT();
+            setAlertText('error in deleting image')
             console.log(err)
         }
-    }
-    
+    },
 }))
 
 export default useStore

@@ -2,31 +2,25 @@ import useStore from "../store.jsx"
 import { useState, useRef, useEffect } from "react"
 import PromptCus from "./PromptCus.jsx";
 
-export default function ImageInput({ limitImg, promptData, setPromptData, setShowImg, setShowDemo, showDemo }) {
+export default function ImageInput({ limitImg, promptData, setPromptData, setShowImg, setShowDemo, showDemo, setShowAlert, setAlertText }) {
 
     let { getImg, getAllImg } = useStore()
     let [promptCus, setPromtCus] = useState({});
     let textArea = useRef();
     let buttonRef = useRef();
     let el = buttonRef.current
-    if(el){
+    if (el) {
         el.style.disabled = 'true'
     }
     function imgSend() {
-        console.log(promptData.length)
-        let el = buttonRef.current
-        if (el) {
-            el.style.disable = 'true'
-        }
+
         setShowDemo(true)
         getImg(promptData, promptCus)
             .then(res => {
                 if ((res.fileName == undefined && res.text == undefined) || (res.fileName == undefined && res.text != undefined)) {
                     setShowDemo(false)
-                    console.log(res)
-                    if (el) {
-                        el.style.disable = 'false'
-                    }
+                    setShowAlert(true)
+                    setAlertText('There might be some input error from your side')
                 }
                 else if (res.fileName != undefined && res.text == undefined) {
                     setTimeout(() => {
@@ -35,9 +29,6 @@ export default function ImageInput({ limitImg, promptData, setPromptData, setSho
                                 setShowDemo(false)
                                 let data = res.data.message
                                 setShowImg(data)
-                                if (el) {
-                                    el.style.disable = 'false'
-                                }
                             })
                     }, 12000)
                 } else {
@@ -47,9 +38,6 @@ export default function ImageInput({ limitImg, promptData, setPromptData, setSho
                                 setShowDemo(false)
                                 let data = res.data.message
                                 setShowImg(data)
-                                if (el) {
-                                    el.style.disable = 'false'
-                                }
                             })
                     }, 12000)
                 }
@@ -94,14 +82,15 @@ export default function ImageInput({ limitImg, promptData, setPromptData, setSho
                     <textarea className='border w-full overflow-hidden resize-none p-2 rounded-lg text-md' autoFocus
                         placeholder="enter prompt here...." ref={textArea} rows={1} type='text' value={promptData} onChange={(e) => handleTextArea(e)}></textarea>
                     <button className='border border-gray-300 h-9 w-20 text-xl rounded-lg text-gray-300 hover:border-white hover:text-white transition-all duration-500'
-                        ref={buttonRef} disabled={showDemo?true:false}
+                        ref={buttonRef} disabled={showDemo ? true : false}
                         onClick={() => {
                             let space = /^\s+$/
                             let checkSpaces = space.test(promptData)
-                            if(!checkSpaces && promptData.length != 0){
+                            if (!checkSpaces && promptData.length != 0) {
                                 imgSend()
                             } else {
-                                console.log('just spaces or no text')
+                                setShowAlert(true)
+                                setAlertText('Your input contains just space or no text')
                             }
                         }}>{showDemo ? '...' : 'send'}</button>
                 </div>
