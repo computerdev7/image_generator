@@ -30,14 +30,17 @@ let useStore = create((set)=> ({
                 prom : prom,
                 promptCus : promptCus
             })
-            return data.data.message
+            if(data.data.message){
+                return data.data.message
+            }
         }catch(err){
             console.log(err)
         }
     },
-    getAllImg : async()=> {
+    getAllImg : async(limit)=> {
+
         try{
-            let data = await api.get('/image/getallimage')
+            let data = await api.get(`/image/getallimage/${limit}`)
             return data
         }catch(err){
             console.log(err)
@@ -54,10 +57,10 @@ let useStore = create((set)=> ({
             console.log(err)
         }
     },
-    deleteImg : async(img) => {
+    deleteImg : async(img,limit) => {
 
         try{
-            let data = await api.delete(`/image/delete?img=${img}`)
+            let data = await api.delete(`/image/delete?img=${img}&limit=${limit}`)
             return data
         }catch(err){
             console.log(err)

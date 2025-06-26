@@ -1,5 +1,5 @@
 import useStore from '../store.jsx';
-import LoginSignUpTemplate from './login/SignupTemplate.jsx';
+import LoginSignUpTemplate from '../components/SignupTemplate.jsx';
 
 export default function Signup(){
 

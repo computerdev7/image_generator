@@ -7,7 +7,6 @@ import connectTo from "./database/database.js";
 import imageRoute from "./routes/imageRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 import rateLimiter from "./middleware/rateLimiterMiddle.js";
-import { stat } from "fs";
 
 let app = express();
 
@@ -24,7 +23,11 @@ app.use(cors({
 
 app.use('/imagesFolder', express.static(path.join(__dirname, "backend", "imageFolder"), {
   setHeaders : (res, path, stat)=> {
-    res.setHeader('Cache-Control' , 'no-store')
+    if(path.includes('latest')){
+      res.setHeader('Cache-Control' , 'no-store')
+    } else {
+      res.setHeader('Cache-Control','private, max-age=60')
+    }
   }
 }));
 

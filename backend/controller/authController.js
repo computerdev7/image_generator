@@ -9,7 +9,7 @@ export async function signup(req, res) {
     let checkSpaceUsername = /\s/.test(username)
     let checkSpacePassword = /\s/.test(password)
     try {
-
+        
         let data = await Auth.find({ username: username })
 
         if (username.length < 5 || username.length > 10 || password.length < 5) {
@@ -45,9 +45,9 @@ export async function login(req, res) {
     try {
 
         let findUser = await Auth.find({username : username})
-        console.log(findUser)
+        
         let checkPassword = await bcrypt.compare(password,findUser[0].password)
-        console.log(checkPassword)
+        
 
         if (username.length < 5 || username.length > 10 || password.length < 5) {
             return res.status(403).json({ message: 'username or password length dont match' })

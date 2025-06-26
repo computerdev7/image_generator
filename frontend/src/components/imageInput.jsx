@@ -1,63 +1,60 @@
 import useStore from "../store.jsx"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
+import PromptCus from "./PromptCus.jsx";
 
-export default function ImageInput({ promptData, setPromptData, setShowImg }) {
+export default function ImageInput({ limitImg, promptData, setPromptData, setShowImg, setShowDemo, showDemo }) {
 
-    let { getImg } = useStore()
+    let { getImg, getAllImg } = useStore()
     let [promptCus, setPromtCus] = useState({});
     let textArea = useRef();
-    let [showDropDown, setShowDropDown] = useState({
-        moodD: false,
-        styleD: false,
-        cameraD: false
-    })
-    console.log(promptCus)
-    const moods = ["none", "Happy", "Sad", "Romantic", "Peaceful", "Dramatic", "Mysterious", "Creepy", "Cinematic", "Epic", "Fantasy", "Futuristic", "Dark", "Melancholic", "Hopeful", "Energetic", "Cozy"];
-
-    const styles = ["none", "Realistic", "Photorealistic", "Cartoon", "Anime", "Pixel Art", "Low Poly", "3D Render", "Sketch / Pencil", "Watercolor", "Oil Painting", "Digital Painting", "Cyberpunk", "Steampunk", "Noir", "Vaporwave", "Surreal", "Minimalist", "Vintage / Retro", "Fantasy", "Sci-fi"];
-
-    const cameraAngles = ["none",
-        "Eye-Level", "High Angle", "Low Angle", "Birds Eye View", "Worms Eye View", "Close-Up", "Medium Shot", "Full Body Shot", "Wide Shot (Long Shot)", "Over-the-Shoulder", "POV (Point of View)", "Two-Shot", "Tracking/Follow Shot", "Frontal View", "Profile View", "Rear View", "Aerial Drone Shot",
-        "360-Degree Shot"];
-
-    let renderMoods = moods.map((el) => {
-        return (
-            <>
-                <div className="w-full bg-lightGray text-gray-300 border-b border-gray-300 p-2 hover:border-white hover:text-white cursor-pointer"
-                    onClick={() => {
-                        setPromtCus(prev => ({ ...prev, mood: el }))
-                        setShowDropDown(prev => ({ ...prev, moodD: !prev.moodD }))
-                    }}>
-                    {el}</div>
-            </>
-        )
-    })
-
-    let renderStyle = styles.map((el) => {
-        return (
-            <>
-                <div className="w-full bg-lightGray text-gray-300 border-b border-gray-300 p-2 hover:border-white hover:text-white cursor-pointer"
-                    onClick={() => {
-                        setPromtCus(prev => ({ ...prev, style: el }))
-                        setShowDropDown(prev => ({ ...prev, styleD: !prev.styleD }))
-                    }}>
-                    {el}</div>
-            </>
-        )
-    })
-
-    let renderCameraAngle = cameraAngles.map((el) => {
-        return (
-            <>
-                <div className="w-full bg-lightGray text-gray-300 border-b border-gray-300 p-2 hover:border-white hover:text-white cursor-pointer"
-                    onClick={() => {
-                        setPromtCus(prev => ({ ...prev, camera: el }))
-                        setShowDropDown(prev => ({ ...prev, cameraD: !prev.cameraD }))
-                    }}>
-                    {el}</div>
-            </>
-        )
-    })
+    let buttonRef = useRef();
+    let el = buttonRef.current
+    if(el){
+        el.style.disabled = 'true'
+    }
+    function imgSend() {
+        console.log(promptData.length)
+        let el = buttonRef.current
+        if (el) {
+            el.style.disable = 'true'
+        }
+        setShowDemo(true)
+        getImg(promptData, promptCus)
+            .then(res => {
+                if ((res.fileName == undefined && res.text == undefined) || (res.fileName == undefined && res.text != undefined)) {
+                    setShowDemo(false)
+                    console.log(res)
+                    if (el) {
+                        el.style.disable = 'false'
+                    }
+                }
+                else if (res.fileName != undefined && res.text == undefined) {
+                    setTimeout(() => {
+                        getAllImg(limitImg)
+                            .then(res => {
+                                setShowDemo(false)
+                                let data = res.data.message
+                                setShowImg(data)
+                                if (el) {
+                                    el.style.disable = 'false'
+                                }
+                            })
+                    }, 12000)
+                } else {
+                    setTimeout(() => {
+                        getAllImg(limitImg)
+                            .then(res => {
+                                setShowDemo(false)
+                                let data = res.data.message
+                                setShowImg(data)
+                                if (el) {
+                                    el.style.disable = 'false'
+                                }
+                            })
+                    }, 12000)
+                }
+            })
+    }
 
     function handleTextArea(e) {
         setPromptData(e.currentTarget.value)
@@ -69,56 +66,47 @@ export default function ImageInput({ promptData, setPromptData, setShowImg }) {
         }
     }
 
+    useEffect(() => {
+        if (showDemo == true) {
+            let interval = setInterval(() => {
+                let el = buttonRef.current
+                if (el) {
+                    if (el.style.opacity == '0.5') {
+                        el.style.opacity = '1'
+                    } else {
+                        el.style.opacity = '0.5'
+                    }
+                }
+
+            }, 1000)
+            return () => {
+                let el = buttonRef.current
+                el.style.opacity = '1';
+                clearInterval(interval)
+            }
+        }
+    }, [showDemo])
+
     return (
         <>
             <div className="w-11/12 min-h-96 sm:min-h-60 md:min-h-52 flex md:pt-10 flex-col rounded-2xl bg-lightGray border border-slate-400 border-opacity-45 p-5 pt-10 shadow-inner-box">
                 <div className="w-full flex flex-col items-center gap-4 min-h-24 md:flex-row md:min-h-9 md:items-end lg:p-3 xl:p-6">
-                    <textarea className='border w-full overflow-hidden resize-none p-2 rounded-lg text-md' 
-                     placeholder="enter prompt here...."   ref={textArea} rows={1} type='text' value={promptData} onChange={(e) => handleTextArea(e)}></textarea>
-                    <button className='border border-gray-300 h-9 w-20 text-xl rounded-lg text-gray-300 hover:border-white hover:text-white'
+                    <textarea className='border w-full overflow-hidden resize-none p-2 rounded-lg text-md' autoFocus
+                        placeholder="enter prompt here...." ref={textArea} rows={1} type='text' value={promptData} onChange={(e) => handleTextArea(e)}></textarea>
+                    <button className='border border-gray-300 h-9 w-20 text-xl rounded-lg text-gray-300 hover:border-white hover:text-white transition-all duration-500'
+                        ref={buttonRef} disabled={showDemo?true:false}
                         onClick={() => {
-                            getImg(promptData, promptCus)
-                                .then(res => {
-                                    setShowImg(prev => [...prev, res])
-                                })
-                        }}>send</button>
+                            let space = /^\s+$/
+                            let checkSpaces = space.test(promptData)
+                            if(!checkSpaces && promptData.length != 0){
+                                imgSend()
+                            } else {
+                                console.log('just spaces or no text')
+                            }
+                        }}>{showDemo ? '...' : 'send'}</button>
                 </div>
                 <div className="flex flex-col p-5 gap-6 xl:gap-14 justify-center items-center w-full sm:flex-row min-h-20 ">
-                    <div className="w-[200px] lg:w-[250px] relative">
-                        <p className="text-gray-300 hover:text-white italic text-sm">mood</p>
-                        <button className="rounded-sm text-gray-300 w-full h-8 border border-gray-300 hover:border-white hover:text-white flex items-center"
-                            onClick={() => setShowDropDown(prev => ({ ...prev, moodD: !prev.moodD,styleD : false,cameraD : false  }))}>
-                            <p className="flex-[0.8]">{promptCus.mood ? promptCus.mood : 'none'}</p> <p className="flex-[0.2]">&#9662;</p>
-                        </button>
-                        <div className="absolute w-full z-10 bg-slate-200 h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray"
-                            style={{ height: showDropDown.moodD ? `285px` : '0px' }}>
-                            {showDropDown.moodD ? renderMoods : undefined}
-                        </div>
-                    </div>
-                    <div className="w-[200px] lg:w-[250px] relative">
-                        <p className="text-gray-300 hover:text-white italic text-sm">style</p>
-                        <button className="rounded-sm text-gray-300 w-full h-8 border border-gray-300 hover:border-white hover:text-white flex items-center"
-                            onClick={() => {
-                                setShowDropDown(prev => ({ ...prev, styleD: !prev.styleD,moodD : false,cameraD : false }))
-                                }}>
-                            <p className="flex-[0.8]">{promptCus.style ? promptCus.style : 'none'}</p> <p className="flex-[0.2]">&#9662;</p>
-                        </button>
-                        <div className="absolute w-full z-10 bg-slate-200 h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray"
-                            style={{ height: showDropDown.styleD ? `285px` : '0px' }}>
-                            {showDropDown.styleD ? renderStyle : undefined}
-                        </div>
-                    </div>
-                    <div className="w-[200px] lg:w-[250px] relative">
-                        <p className="text-gray-300 hover:text-white italic text-sm">camera angle</p>
-                        <button className="rounded-sm text-gray-300 w-full h-8 border border-gray-300 hover:border-white hover:text-white flex items-center"
-                            onClick={() => setShowDropDown(prev => ({ ...prev, cameraD: !prev.cameraD,styleD : false,moodD : false }))}>
-                            <p className="flex-[0.8]">{promptCus.camera ? promptCus.camera : 'none'}</p> <p className="flex-[0.2]">&#9662;</p>
-                        </button>
-                        <div className="absolute w-full z-10 bg-slate-200 h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray"
-                            style={{ height: showDropDown.cameraD ? `285px` : '0px' }}>
-                            {showDropDown.cameraD ? renderCameraAngle : undefined}
-                        </div>
-                    </div>
+                    <PromptCus promptCus={promptCus} setPromtCus={setPromtCus} />
                 </div>
             </div>
         </>
