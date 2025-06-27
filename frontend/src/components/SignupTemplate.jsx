@@ -1,6 +1,9 @@
 import { useState } from "react"
 import { IoMdArrowDropup } from "react-icons/io";
 import { LuEye,LuEyeClosed  } from "react-icons/lu";
+import Alert from "./alert.jsx"
+import useStore from "../store.jsx";
+import { useEffect } from "react";
 
 export default function LoginSignUpTemplate({ func, work }) {
 
@@ -8,10 +11,23 @@ export default function LoginSignUpTemplate({ func, work }) {
     let [passWord, setPassWord] = useState('')
     let [showInstruct, setShowInstruct] = useState(false)
     let [viewPassword,setViewPassword] = useState('')
+    let [showAlert, setShowAlert] = useState(false);
+    let [showAlertText,setShowAlertText] = useState('')
+    let {showAlertS} = useStore();
 
+    useEffect(()=> {
+        if(showAlertS.lert){
+            setShowAlert(true)
+            setShowAlertText(showAlertS.text)
+        }
+    },[showAlertS])
         
-    
     return (
+        <>
+        <div className="relative"
+        >
+            {showAlert? <Alert text={showAlertText} setShowAlert={setShowAlert}/> : undefined }
+        </div>
         <div className="h-screen w-screen flex flex-col justify-center items-center bg-darkGray">
             <div className="w-10/12 min-h-2/4 min-[400px]:w-[300px] sm:w-[350px] xl:w-[400px] bg-lightGray flex flex-col justify-center 
             items-center gap-2 rounded-xl border border-slate-400 border-opacity-45 shadow-inner-box">
@@ -62,13 +78,31 @@ export default function LoginSignUpTemplate({ func, work }) {
                         </div>
                     <button className="border h-10 w-20 rounded-lg text-gray-300 hover:border-white hover:text-white border-gray-400 shadow-inner-box"
                         onClick={() => {
-                            func(userName, passWord)
-                                .then(res => console.log(res))
+                            let checkSpacesU = /^\s+$/.test(userName)
+                            let checkSpacesP = /^\s+$/.test(passWord)
+                            let checkSpaceU = /\s+/.test(userName)
+                            let checkSpaceP = /\s+/.test(passWord)
+                            let checkN = /\d/.test(userName)
+                            let checkS = /[@#$%^&*!]/.test(userName)
+                            if(userName.length < 6 || userName.length > 20 || passWord.length < 6){
+                                setShowAlert(true)
+                                setShowAlertText('The length of username or password is inappropriate *check dropdown')
+                            } else if(checkSpacesU || checkSpacesP || checkSpaceU || checkSpaceP){
+                                setShowAlert(true)
+                                setShowAlertText('No spaces in usrname and password *check dropdown')
+                            } else if(!checkN || !checkS){
+                                setShowAlert(true)
+                                setShowAlertText('No special or num charachter *check dropdown')
+                            } else {
+                                func(userName, passWord)
+                                    .then(res => console.log(res))
+                            }
                         }}>
                         {work}
                     </button>
                 </div>
             </div>
         </div>
+        </>
     )
 }
