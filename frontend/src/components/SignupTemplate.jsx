@@ -4,6 +4,7 @@ import { LuEye,LuEyeClosed  } from "react-icons/lu";
 import Alert from "./alert.jsx"
 import useStore from "../store.jsx";
 import { useEffect } from "react";
+import ToolTip from "./toolTip.jsx";
 
 export default function LoginSignUpTemplate({ func, work }) {
 
@@ -34,7 +35,8 @@ export default function LoginSignUpTemplate({ func, work }) {
                 <div className="flex gap-2 h-16 items-center">
                     <h1 className="text-2xl font-semibold text-gray-300 hover:text-white"
                     >{work}</h1>
-                    <button className={`text-gray-500 text-2xl active:text-gray-100
+                    <div className="h-fit w-fit group">
+                    <button className={`text-gray-500 text-2xl active:text-gray-100 
                      transition-transform duration-500 transform ${showInstruct ? 'rotate-90' : 'rotate-0'}`}
                         onClick={() => {
                             setShowInstruct(prev => !prev)
@@ -42,9 +44,10 @@ export default function LoginSignUpTemplate({ func, work }) {
                     >
                         <IoMdArrowDropup />
                     </button>
+                    <ToolTip text={'dropdown'} />
+                    </div>
                 </div>
-
-                <div className={`w-full pl-5 flex flex-col gap-3 transition-all duration-500 ease-out ${showInstruct ? 'max-h-48' : 'max-h-0 opacity-0 '}`}>
+                <div className={`w-full pl-5 flex flex-col gap-3 transition-all duration-500 ease-in ${showInstruct ? 'max-h-48' : 'max-h-0 opacity-0 '}`}>
                     <div>
                         <h1 className="text-md text-gray-300 hover:text-white">Username</h1>
                         <p className="text-sm text-gray-400 ">Username length 6 to 20 charachter</p>
@@ -56,18 +59,19 @@ export default function LoginSignUpTemplate({ func, work }) {
                         <p className="text-sm text-gray-400">Password length must be above 5 char</p>
                         <p className="text-sm text-gray-400">Must not have a space</p>
                     </div>
+                    
                 </div>
                 <div className="flex flex-col gap-6 w-full p-5 justify-center items-center z-10">
                     <div className="w-full">
-                    <p className="text-sm text-gray-400 italic">username</p>
-                    <input className="border border-black w-full h-10 rounded-lg p-2 text-lg" 
+                    <p className="text-sm text-gray-400 italic hover:text-white">username</p>
+                    <input className="border border-darkGray w-full h-10 rounded-lg p-2 text-lg font-medium text-gray-600 tracking-tight outline-gray-700 bg-gray-200" 
                         placeholder="akash@1" autoFocus
                         disabled={false}
                         value={userName} onChange={(e) => setUserName(e.target.value)} type='text' />
                     </div>
                         <div className="relative w-full">
-                    <p className="text-sm text-gray-400 italic">password</p>
-                    <input className="border border-black w-full h-10 rounded-lg p-2 text-lg"
+                    <p className="text-sm text-gray-400 italic hover:text-white">password</p>
+                    <input className="border border-darkGray w-full h-10 rounded-lg p-2 text-lg font-medium text-gray-600 tracking-tight outline-gray-700 bg-gray-200"
                         value={passWord} onChange={(e) => setPassWord(e.target.value)} type={viewPassword?'text':'password'} />
                         <button className="absolute right-2 h-8 w-30 top-6 flex justify-center items-center z-10 text-gray-500"
                         onClick={()=> {

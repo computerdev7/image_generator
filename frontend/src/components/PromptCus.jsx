@@ -19,7 +19,7 @@ export default function PromptCus({ promptCus, setPromtCus }) {
     let renderMoods = moods.map((el) => {
         return (
             <>
-                <div className="w-full bg-lightGray text-gray-300 border-b border-gray-300 p-2 hover:border-white hover:text-white cursor-pointer"
+                <div className="w-full bg-darkGray/30 backdrop-blur-sm shadow-2xl text-gray-300 border-b border-gray-300 p-2 text-sm hover:italic hover:border-white hover:text-white cursor-pointer"
                     onClick={() => {
                         setPromtCus(prev => ({ ...prev, mood: el }))
                         setShowDropDown(prev => ({ ...prev, moodD: !prev.moodD }))
@@ -32,7 +32,7 @@ export default function PromptCus({ promptCus, setPromtCus }) {
     let renderStyle = styles.map((el) => {
         return (
             <>
-                <div className="w-full bg-lightGray text-gray-300 border-b border-gray-300 p-2 hover:border-white hover:text-white cursor-pointer"
+                <div className="w-full bg-darkGray/30 backdrop-blur-sm text-gray-300 border-b border-gray-300 p-2 text-sm hover:italic hover:border-white hover:text-white cursor-pointer"
                     onClick={() => {
                         setPromtCus(prev => ({ ...prev, style: el }))
                         setShowDropDown(prev => ({ ...prev, styleD: !prev.styleD }))
@@ -45,7 +45,7 @@ export default function PromptCus({ promptCus, setPromtCus }) {
     let renderCameraAngle = cameraAngles.map((el) => {
         return (
             <>
-                <div className="w-full bg-lightGray text-gray-300 border-b border-gray-300 p-2 hover:border-white hover:text-white cursor-pointer"
+                <div className="w-full bg-darkGray/30 backdrop-blur-sm text-gray-300 border-b border-gray-300 p-2 text-sm hover:italic hover:border-white hover:text-white cursor-pointer"
                     onClick={() => {
                         setPromtCus(prev => ({ ...prev, camera: el }))
                         setShowDropDown(prev => ({ ...prev, cameraD: !prev.cameraD }))
@@ -64,7 +64,8 @@ export default function PromptCus({ promptCus, setPromtCus }) {
                     onClick={() => setShowDropDown(prev => ({ ...prev, moodD: !prev.moodD, styleD: false, cameraD: false }))}>
                     <p className="flex-[0.8]">{promptCus.mood ? promptCus.mood : 'none'}</p> <p className="flex-[0.2]">&#9662;</p>
                 </button>
-                <div className="absolute w-full z-10 bg-slate-200 h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray"
+                <div className="absolute w-full z-10 bg-darkGray/30 backdrop-blur-sm h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray
+                transition-all duration-300 ease shadow-2xl"
                     style={{ height: showDropDown.moodD ? `285px` : '0px' }}>
                     {showDropDown.moodD ? renderMoods : undefined}
                 </div>
@@ -77,7 +78,8 @@ export default function PromptCus({ promptCus, setPromtCus }) {
                     }}>
                     <p className="flex-[0.8]">{promptCus.style ? promptCus.style : 'none'}</p> <p className="flex-[0.2]">&#9662;</p>
                 </button>
-                <div className="absolute w-full z-10 bg-slate-200 h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray"
+                <div className="absolute w-full z-10 bg-darkGray/30 backdrop-blur-sm h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray
+                transition-all duration-300 ease shadow-2xl"
                     style={{ height: showDropDown.styleD ? `285px` : '0px' }}>
                     {showDropDown.styleD ? renderStyle : undefined}
                 </div>
@@ -88,7 +90,8 @@ export default function PromptCus({ promptCus, setPromtCus }) {
                     onClick={() => setShowDropDown(prev => ({ ...prev, cameraD: !prev.cameraD, styleD: false, moodD: false }))}>
                     <p className="flex-[0.8]">{promptCus.camera ? promptCus.camera : 'none'}</p> <p className="flex-[0.2]">&#9662;</p>
                 </button>
-                <div className="absolute w-full z-10 bg-slate-200 h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray"
+                <div className="absolute w-full z-10 bg-darkGray/30 backdrop-blur-sm h-[300px] overflow-y-scroll scrollbar-thin scrollbar-track-lightGray scrollbar-thumb-darkGray
+                 transition-all duration-300 ease shadow-2xl"
                     style={{ height: showDropDown.cameraD ? `285px` : '0px' }}>
                     {showDropDown.cameraD ? renderCameraAngle : undefined}
                 </div>
