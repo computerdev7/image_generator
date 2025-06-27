@@ -40,6 +40,7 @@ export default function ImagePage() {
             setShowAlert(true)
             setAlertText(showAlertS.text)
         }
+        
     },[showAlertS])
 
     return (
