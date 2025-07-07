@@ -10,7 +10,7 @@ export default function App() {
     <Routes>
     <Route path='/image' element={<ImagePage />}/>
     <Route path='/signup' element={<Signup />}/>
-    <Route path='/login' element={<Login />}/>
+    <Route path='/' element={<Login />}/>
     </Routes>
     </BrowserRouter>
   )

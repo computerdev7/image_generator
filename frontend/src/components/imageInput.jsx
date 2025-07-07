@@ -86,7 +86,7 @@ export default function ImageInput({ limitImg, promptData, setPromptData, setSho
                 <div className="w-full flex flex-col items-center gap-4 min-h-24 md:flex-row md:min-h-9 md:items-end lg:p-3 xl:p-6">
                     <textarea className='border border-darkGray w-full overflow-hidden resize-none p-2 rounded-lg text-md font-medium text-gray-600 tracking-tight outline-gray-700 bg-gray-200' autoFocus
                         placeholder="enter prompt here...." ref={textArea} rows={1} type='text' value={promptData} onChange={(e) => handleTextArea(e)}></textarea>
-                    <button className='border border-gray-300 h-9 w-20 text-xl rounded-lg text-gray-300 hover:border-white hover:text-white transition-all duration-500 shadow-inner-box'
+                    <button className='border border-gray-300/30 h-9 w-20 text-xl rounded-lg text-gray-300 hover:border-white hover:text-white transition-all duration-500 shadow-inner-box'
                         ref={buttonRef} disabled={showDemo ? true : false}
                         onClick={() => {
                             let space = /^\s+$/
@@ -103,7 +103,7 @@ export default function ImageInput({ limitImg, promptData, setPromptData, setSho
                     <PromptCus promptCus={promptCus} setPromtCus={setPromtCus} />
                 </div>
                 <div className="w-full flex justify-center items-center group">
-                    <p className="text-gray-300 italic text-sm hover:text-white">Prompt Guidance</p>
+                    <p className="text-gray-300 italic text-sm hover:text-white transition-all duration-500">Prompt Guidance</p>
                     <button
                         className={`text-gray-500 text-2xl active:text-gray-100 transition-transform duration-500 transform ${showPInst ? 'rotate-90' : 'rotate-0'}`}
                         onClick={() => {

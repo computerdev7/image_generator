@@ -105,6 +105,14 @@ let useStore = create((set,get)=> ({
             console.log(err)
         }
     },
+    logout : async() => {
+        try{
+            let data = await api.post('/auth/logout')
+            return data 
+        }catch(err){
+            err
+        }
+    }
 }))
 
 export default useStore

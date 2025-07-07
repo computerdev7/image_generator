@@ -9,7 +9,7 @@ export async function signup(req, res) {
     let checkSpaceUsername = /\s/.test(username)
     let checkSpacePassword = /\s/.test(password)
     try {
-        
+
         let data = await Auth.find({ username: username })
 
         if (username.length < 5 || username.length > 10 || password.length < 5) {
@@ -25,8 +25,8 @@ export async function signup(req, res) {
         let hashPassword = await bcrypt.hash(password, saltRounds)
 
         let createNew = new Auth({
-            username : username,
-            password : hashPassword
+            username: username,
+            password: hashPassword
         })
 
         let saveNew = await createNew.save();
@@ -44,22 +44,22 @@ export async function login(req, res) {
     let checkD = /\d/;
     try {
 
-        let findUser = await Auth.find({username : username})
-        
-        let checkPassword = await bcrypt.compare(password,findUser[0].password)
-        
+        let findUser = await Auth.find({ username: username })
+
+        let checkPassword = await bcrypt.compare(password, findUser[0].password)
+
 
         if (username.length < 5 || username.length > 10 || password.length < 5) {
             return res.status(403).json({ message: 'username or password length dont match' })
         } else if (!checkSpc.test(username) || !checkD.test(username)) {
             return res.status(403).json({ message: 'the username may not have any special charachter or a number' })
-        } else if(findUser.length == 0){
-            return res.status(403).json({message : 'invalid username'})
-        } else if(!checkPassword){
-            return res.status(403).json({message : 'password not matched'})
+        } else if (findUser.length == 0) {
+            return res.status(403).json({ message: 'invalid username' })
+        } else if (!checkPassword) {
+            return res.status(403).json({ message: 'password not matched' })
         }
 
-        let token =  jwt.sign({ username: username }, process.env.SECRET, { expiresIn: '1h' })
+        let token = jwt.sign({ username: username }, process.env.SECRET, { expiresIn: '1h' })
 
         res.cookie("token", token, {
             httpOnly: true,
@@ -67,10 +67,24 @@ export async function login(req, res) {
             sameSite: "lax",
             maxAge: 60 * 60 * 1000
         })
-            
+
         res.status(200).json({ message: username, password })
     } catch (err) {
-        res.status(500).json({message : err})
+        res.status(500).json({ message: err })
     }
 
+}
+
+export async function logout(req, res) {
+    try {
+        res.clearCookie('token', {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 0
+        })
+        res.status(200).json({message: 'success'})
+    } catch (err) {
+        console.log(err)
+    }
 }

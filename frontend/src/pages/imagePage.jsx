@@ -1,13 +1,17 @@
-import { useState, useEffect, useRef } from 'react'
-import useStore from "../store.jsx"
-import ImageContainer from "../components/imageContainer.jsx"
-import ImageInput from '../components/imageInput.jsx'
-import FloatImg from '../components/FloatImg.jsx'
-import Alert from '../components/alert.jsx'
+import { useState, useEffect, useRef } from 'react';
+import useStore from "../store.jsx";
+import ImageContainer from "../components/imageContainer.jsx";
+import ImageInput from '../components/imageInput.jsx';
+import FloatImg from '../components/FloatImg.jsx';
+import Alert from '../components/alert.jsx';
+import { CiLogin,CiLogout  } from "react-icons/ci";
+import ToolTip from '../components/toolTip.jsx';
+import { useNavigate } from 'react-router';
 
 export default function ImagePage() {
 
-    let { getAllImg,showAlertS } = useStore()
+    let navigate = useNavigate()
+    let { getAllImg,showAlertS,logout } = useStore()
     let [promptData, setPromptData] = useState('');
     let [showImg, setShowImg] = useState([]);
     let [renderImages, setRenderImages] = useState(false)
@@ -40,11 +44,32 @@ export default function ImagePage() {
             setShowAlert(true)
             setAlertText(showAlertS.text)
         }
-        
     },[showAlertS])
 
     return (
         <>
+            <div className='absolute w-full left-0 flex p-2 sm:text-lg md:text-xl gap-3'>
+                <button className='group text-gray-500 hover:text-white transition-all duration-500  active:text-red-500'
+                onClick={()=> {
+                    navigate('/signup')
+                }}
+                >
+                <CiLogin className=''/>
+                <ToolTip text={'new signup'} more={true}/>
+                </button>
+                <button className='group text-gray-500 hover:text-white transition-all duration-500  active:text-red-500'
+                onClick={()=> {
+                    logout()
+                    .then(res=> {
+                        if(res.status == '200'){
+                            navigate('/')
+                        }
+                    })
+                }}>
+                <CiLogout/>
+                <ToolTip text={'logout'} more={true} />
+                </button>
+            </div>
             <div className='relative '>
                 {showFloat != '' &&
                     <FloatImg showFloat={showFloat} setShowFloat={setShowFloat} />

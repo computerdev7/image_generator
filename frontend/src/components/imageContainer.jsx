@@ -34,20 +34,20 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
     function confirmUpd(source) {
         let trimSource = source.slice(35)
         setShowUDemo(true)
-        setInputText('')
         updateImg(trimSource, inputText)
-            .then(res => {
-                if (res.data.text) {
-                    setShowAlert(true)
-                    setAlertText('there migght be a prompt error from your side')
+        .then(res => {
+            if (res.data.text) {
+                setShowAlert(true)
+                setAlertText('there migght be a prompt error from your side')
+                setShowUDemo(false)
+            } else {
+                setTimeout(() => {
                     setShowUDemo(false)
-                } else {
-                    setTimeout(() => {
-                        setShowUDemo(false)
-                        setRenderImages(prev => !prev)
-                    }, 12000)
-                }
-            })
+                    setRenderImages(prev => !prev)
+                }, 12000)
+            }
+        })
+        setInputText('')
         setShowUpdateInput(prev => ({ ...prev, id: undefined }))
         setInputText('')
     }
@@ -60,7 +60,7 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
 
         return (
             <div 
-                className="border border-gray-300 hover:border-white rounded-lg p-1 text-gray-300 h-fit shadow-inner-box-image">
+                className="border border-gray-300/30 hover:border-gray-300/70 rounded-lg p-1 text-gray-300 h-fit hover:shadow-inner-box-image transition-all duration-500">
                 <div className="group relative">
                     <img onClick={() => setShowFloat(el)}
                         className="rounded-lg cursor-pointer" src={source} />
@@ -76,14 +76,14 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
                 </div>
                 <div className="flex w-full justify-around p-2 text-[12px] sm:text-[14px] lg:text-[16px] ">
                     {el.imageUrl.includes('latest') &&
-                        <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg text-gray-300 border-gray-300 hover:text-white hover:border-white shadow-inner-box"
+                        <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg text-gray-300 border-gray-300/30 hover:text-white hover:border-white shadow-inner-box transition-all duration-500"
                         disabled={showUDemo?true:false}
                             ref={uRef}
                             onClick={() => {
                                 setShowUpdateInput(prev => ({ ...prev, id: id }))
                             }}>{showUDemo ? '...' : 'Update'}</button>
                     }
-                    <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg text-gray-300 border-gray-300 hover:text-white hover:border-white shadow-inner-box"
+                    <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg text-gray-300 border-gray-300/30 hover:text-white hover:border-white shadow-inner-box transition-all duration-500"
                     disabled={showUDemo?true:false}
                         onClick={() => {
                             let trimSource = source.slice(35)
@@ -105,7 +105,7 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
                             type="text" value={inputText}
                             onChange={(e) => setInputText(e.target.value)}></textarea>
                         <div className="flex w-full justify-around p-2">
-                            <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg shadow-inner-box text-gray-300 border-gray-300 hover:text-white hover:border-white"
+                            <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg shadow-inner-box text-gray-300 border-gray-300 hover:text-white hover:border-white transition-all duration-500"
                                 onClick={() => {
                                     let space = /^\s+$/
                                     let checkSpaces = space.test(inputText)
@@ -116,7 +116,7 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
                                         setAlertText('There is no text or just spaces inside input')
                                     }
                                 }}>Confrim</button>
-                            <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg shadow-inner-box text-gray-300 border-gray-300 hover:text-white hover:border-white"
+                            <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg shadow-inner-box text-gray-300 border-gray-300 hover:text-white hover:border-white transition-all duration-500"
                                 onClick={() => {
                                     setShowUpdateInput(prev => ({ ...prev, id: undefined }))
                                     setInputText('')
@@ -142,7 +142,7 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
                         {renderImg}
                     </div>
                     <div className="w-full h-fit flex justify-center items-center mt-4 ">
-                        <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg text-[16px] sm:text-[18px] lg:text-[20px] text-gray-300 group hover:text-white hover:border-white shadow-inner-box"
+                        <button className="border border-gray-300/30 p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg text-[16px] sm:text-[18px] lg:text-[20px] text-gray-300 group hover:text-white hover:border-white shadow-inner-box transition-all duration-500"
                             onClick={() => {
                                 setLimitImg(prev => prev + 8)
                             }}

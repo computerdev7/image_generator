@@ -11,7 +11,7 @@ export default function FloatImg({showFloat,setShowFloat}){
                          scrollbar-thin '>
                             <p>{showFloat.text}</p>
                         </div>
-                        <button className='h-10 w-36 border border-gray-300/30 text-gray-300 hover:border-gray-300/100 hover:text-white'
+                        <button className='h-10 w-36 border border-gray-300/30 text-gray-300 hover:border-gray-300/100 hover:text-white transition-all duration-500'
                             onClick={() => {
                                 setShowFloat('')
                             }}
