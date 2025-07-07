@@ -32,16 +32,17 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
     }, [showUDemo])
 
     function confirmUpd(source) {
-        let trimSource = source.slice(35)
+        let trimSource = source.slice(13)
         setShowUDemo(true)
         updateImg(trimSource, inputText)
         .then(res => {
             if (res.data.text) {
                 setShowAlert(true)
-                setAlertText('there migght be a prompt error from your side')
+                setAlertText('There might be a prompt error from your side')
                 setShowUDemo(false)
             } else {
                 setTimeout(() => {
+                    console.log(res)
                     setShowUDemo(false)
                     setRenderImages(prev => !prev)
                 }, 12000)
@@ -52,27 +53,27 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
         setInputText('')
     }
 
-    let renderImg = showImg.map((el) => {
+    let renderImg = showImg?.map((el) => {
 
         let id = el._id
-        let source = `http://localhost:3000/imagesFolder/${el.imageUrl}`
+        let source = `imagesFolder/${el?.imageUrl}`
         let text = el.text
 
         return (
-            <div 
+            <div
                 className="border border-gray-300/30 hover:border-gray-300/70 rounded-lg p-1 text-gray-300 h-fit hover:shadow-inner-box-image transition-all duration-500">
                 <div className="group relative">
                     <img onClick={() => setShowFloat(el)}
                         className="rounded-lg cursor-pointer" src={source} />
                         <a className="group-hover:z-50 -z-10 text-white bg-black/40 rounded-full pl-1 pr-1 backdrop-blur-md opacity-100 absolute right-2 bottom-3 group"
-                        href={`http://localhost:3000/image/download/${el.imageUrl}`} download={true}> 
+                        href={`image/download/${el?.imageUrl}`} download={true}> 
                             <button onClick={(e)=> {
                                 e.stopPropagation()
                             }}><FaDownload /></button>
                         </a>
                 </div>
                 <div className="p-2 text-[12px] sm:text-[14px] lg:text-[16px]">
-                    {text.length > 0 && `${text.substring(0, 30)}.....`}
+                    {text?.length > 0 && `${text?.substring(0, 30)}.....`}
                 </div>
                 <div className="flex w-full justify-around p-2 text-[12px] sm:text-[14px] lg:text-[16px] ">
                     {el.imageUrl.includes('latest') &&
@@ -86,7 +87,8 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
                     <button className="border p-1 sm:p-2 xl:pl-3 xl:pr-3 rounded-lg text-gray-300 border-gray-300/30 hover:text-white hover:border-white shadow-inner-box transition-all duration-500"
                     disabled={showUDemo?true:false}
                         onClick={() => {
-                            let trimSource = source.slice(35)
+                            let trimSource = source.slice(13)
+                            console.log(trimSource)
                             deleteImg(trimSource, limitImg)
                                 .then(res => {
                                     let data = res.data.message
@@ -132,7 +134,7 @@ export default function ImageContainer({ limitImg, showImg, setRenderImages, set
 
     return (
         <>
-            {showImg.length == 0 ?
+            {showImg?.length == 0 ?
                 <div className='flex-1 w-11/12 min-h-44 bg-lightGray border border-slate-400 border-opacity-45 shadow-inner-box rounded-2xl flex justify-center items-center'>
                     <p className="text-gray-300 text-md lg:text-lg">No images, pls generate to see</p>
                 </div>

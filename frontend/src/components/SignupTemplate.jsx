@@ -5,8 +5,7 @@ import Alert from "./alert.jsx"
 import useStore from "../store.jsx";
 import { useEffect } from "react";
 import ToolTip from "./toolTip.jsx";
-import { Link } from "react-router";
-import { useNavigate } from "react-router";
+import { useNavigate,Link } from "react-router-dom";
 
 export default function LoginSignUpTemplate({ func, work }) {
 
@@ -94,7 +93,7 @@ export default function LoginSignUpTemplate({ func, work }) {
                             let checkSpaceP = /\s+/.test(passWord)
                             let checkN = /\d/.test(userName)
                             let checkS = /[@#$%^&*!]/.test(userName)
-                            if(userName.length < 6 || userName.length > 20 || passWord.length < 6){
+                            if(userName?.length < 6 || userName?.length > 20 || passWord?.length < 6){
                                 setShowAlert(true)
                                 setShowAlertText('The length of username or password is inappropriate *check dropdown')
                             } else if(checkSpacesU || checkSpacesP || checkSpaceU || checkSpaceP){

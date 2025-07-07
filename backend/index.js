@@ -21,6 +21,9 @@ app.use(cors({
   credentials: true
 }));
 
+app.use('/image', imageRoute)
+app.use('/auth', authRoutes)
+
 app.use('/imagesFolder', express.static(path.join(__dirname, "backend", "imageFolder"), {
   setHeaders : (res, path, stat)=> {
     if(path.includes('latest')){
@@ -31,8 +34,15 @@ app.use('/imagesFolder', express.static(path.join(__dirname, "backend", "imageFo
   }
 }));
 
-app.use('/image', imageRoute)
-app.use('/auth', authRoutes)
+
+if(process.env.NODE_ENV == 'production'){
+  app.use(express.static(path.join(__dirname,"/frontend/dist")))
+
+  app.get("*",(req,res)=> {
+    res.sendFile(path.resolve(__dirname,'frontend','dist','index.html'));
+  })
+}
+
 
 app.listen(3000, () => {
   connectTo();

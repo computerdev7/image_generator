@@ -29,7 +29,7 @@ let useStore = create((set,get)=> ({
             let setShowAlertT = get().setShowAlertT
             let setAlertText = get().setAlertText
             setShowAlertT();
-            setAlertText('error in the login')
+            setAlertText('No user found or wait for 30 sec then re-try')
             console.log(err)
         }
     },
@@ -44,7 +44,7 @@ let useStore = create((set,get)=> ({
             let setShowAlertT = get().setShowAlertT
             let setAlertText = get().setAlertText
             setShowAlertT();
-            setAlertText('error in the signup')
+            setAlertText('please wait for 30 sec')
             console.log(err)
         }
     },
@@ -61,7 +61,7 @@ let useStore = create((set,get)=> ({
             let setShowAlertT = get().setShowAlertT
             let setAlertText = get().setAlertText
             setShowAlertT();
-            setAlertText('error in getting image')
+            setAlertText('something unexpected occured if not login then login first or change your prompt')
             console.log(err)
         }
     },
@@ -74,7 +74,7 @@ let useStore = create((set,get)=> ({
             let setShowAlertT = get().setShowAlertT
             let setAlertText = get().setAlertText
             setShowAlertT();
-            setAlertText('error in getting all the image')
+            setAlertText('login first to see your images')
             console.log(err)
         }
     },
@@ -89,7 +89,7 @@ let useStore = create((set,get)=> ({
             let setShowAlertT = get().setShowAlertT
             let setAlertText = get().setAlertText
             setShowAlertT();
-            setAlertText('error in updating image')
+            setAlertText('something unexpected occured if not login then login first or change your prompt')
             console.log(err)
         }
     },

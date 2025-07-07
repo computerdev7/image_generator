@@ -6,7 +6,7 @@ import FloatImg from '../components/FloatImg.jsx';
 import Alert from '../components/alert.jsx';
 import { CiLogin,CiLogout  } from "react-icons/ci";
 import ToolTip from '../components/toolTip.jsx';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 export default function ImagePage() {
 

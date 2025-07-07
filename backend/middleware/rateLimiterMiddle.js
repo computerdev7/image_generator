@@ -8,7 +8,7 @@ export default function rateLimiter() {
             return next()
         } else {
 
-        let reqLimit = 10;
+        let reqLimit = 200;
         let timeLimit = 60 * 1000;
         let ip = req.ip;
         let now = Date.now();

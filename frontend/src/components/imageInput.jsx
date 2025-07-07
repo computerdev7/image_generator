@@ -91,7 +91,7 @@ export default function ImageInput({ limitImg, promptData, setPromptData, setSho
                         onClick={() => {
                             let space = /^\s+$/
                             let checkSpaces = space.test(promptData)
-                            if (!checkSpaces && promptData.length != 0) {
+                            if (!checkSpaces && promptData?.length != 0) {
                                 imgSend()
                             } else {
                                 setShowAlert(true)

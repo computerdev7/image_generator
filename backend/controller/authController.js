@@ -24,6 +24,15 @@ export async function signup(req, res) {
         let saltRounds = 10
         let hashPassword = await bcrypt.hash(password, saltRounds)
 
+        let token = jwt.sign({ username: username }, process.env.SECRET, { expiresIn: '1h' })
+
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax",
+            maxAge: 60 * 60 * 1000
+        })
+
         let createNew = new Auth({
             username: username,
             password: hashPassword
@@ -47,7 +56,6 @@ export async function login(req, res) {
         let findUser = await Auth.find({ username: username })
 
         let checkPassword = await bcrypt.compare(password, findUser[0].password)
-
 
         if (username.length < 5 || username.length > 10 || password.length < 5) {
             return res.status(403).json({ message: 'username or password length dont match' })

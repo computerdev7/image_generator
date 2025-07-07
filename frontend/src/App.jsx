@@ -2,7 +2,7 @@ import './index.css'
 import ImagePage from './pages/imagePage.jsx'
 import Signup from './pages/signup.jsx'
 import Login from "./pages/login.jsx"
-import {BrowserRouter, Routes , Route} from "react-router"
+import {BrowserRouter, Routes , Route} from "react-router-dom"
 
 export default function App() {
   return (
