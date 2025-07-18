@@ -3,7 +3,7 @@ import { GoogleGenAI, Modality } from "@google/genai";
 import imageSchema from "../models/imageModel.js"
 import path from "path";
 
-const ai = new GoogleGenAI({ apiKey: "AIzaSyB2aSTV-lFPdnZ2L7jSP3Jj-90iCkRn9_k" });
+const ai = new GoogleGenAI({ apiKey: process.env.API });
 
 let __dirname = path.resolve()
 
