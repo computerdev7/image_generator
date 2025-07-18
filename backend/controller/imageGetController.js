@@ -2,7 +2,7 @@ import fs from "fs"
 import { GoogleGenAI, Modality } from "@google/genai";
 import imageSchema from "../models/imageModel.js"
 
-const ai = new GoogleGenAI({ apiKey: "AIzaSyB2aSTV-lFPdnZ2L7jSP3Jj-90iCkRn9_k" });
+const ai = new GoogleGenAI({ apiKey: process.env.API });
 
 export async function getImg(req, res) {
     let prompt = req.body.prom
